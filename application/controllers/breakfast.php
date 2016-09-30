@@ -11,6 +11,8 @@ class breakfast extends CI_Controller {
 
     public function index()
     {
+
+        //parse
         $url = "http://hydtech.net23.net/breakfast.xml";
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -21,6 +23,7 @@ class breakfast extends CI_Controller {
 
         $xml = simplexml_load_string($data);
 
+        //save
         foreach ($xml->food as $food){
             $name = $food->name;
             $price = $food->price;
@@ -28,7 +31,7 @@ class breakfast extends CI_Controller {
             $calories = $food->calories;
 
             $this->breakfastModel->breakfastCreate($name,$price,$description,$calories);
-            $this->breakfastModel->breakfast2Create($name);
+            $this->breakfastModel->breakfast2Create();
         };
 
         //pagination
@@ -37,12 +40,10 @@ class breakfast extends CI_Controller {
         $list['per_page'] = 5;
         $list['num_links'] = 10;
         $list['total_rows'] = $this->db->get('parsebreakfast')->num_rows();
-
         $this->pagination->initialize($list);
 
         //information to send view
         $list['breakfastList'] = $this->db->get('parsebreakfast', $list['per_page'],$this->uri->segment(3));
-
         $this->load->view('home', $list);
     }
 }

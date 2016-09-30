@@ -15,8 +15,10 @@ class breakfastModel extends CI_Model{
         $this->db->insert('parsebreakfast');
     }
 
-    public function breakfast2Create($name){
-        $this->db->set('name', "$name");
+    public function breakfast2Create(){
+        $result = $this->db->get('parsebreakfast')->num_rows();
+
+        $this->db->set('last_id', "$result");
         $this->db->insert('parsebreakfast2');
     }
 }
