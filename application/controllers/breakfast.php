@@ -22,6 +22,7 @@ class breakfast extends CI_Controller {
         curl_close($ch);
 
         $xml = simplexml_load_string($data);
+        //$this->load->view('home', $xml);
 
         //save
         foreach ($xml->food as $food){
@@ -39,14 +40,35 @@ class breakfast extends CI_Controller {
 
         //pagination
         $this->load->library('pagination');
-        $list['base_url'] = base_url().'/index/';
-        $list['per_page'] = 5;
-        $list['num_links'] = 10;
-        $list['total_rows'] = $this->db->get('parsebreakfast')->num_rows();
-        $this->pagination->initialize($list);
+        $config["full_tag_open"] = '<ul class="pagination">';
+        $config["full_tag_close"] = '</ul>';
+        $config["first_link"] = "&laquo;";
+        $config["first_tag_open"] = "<li>";
+        $config["first_tag_close"] = "</li>";
+        $config["last_link"] = "&raquo;";
+        $config["last_tag_open"] = "<li>";
+        $config["last_tag_close"] = "</li>";
+        $config['next_link'] = '&gt;';
+        $config['next_tag_open'] = '<li>';
+        $config['next_tag_close'] = '<li>';
+        $config['prev_link'] = '&lt;';
+        $config['prev_tag_open'] = '<li>';
+        $config['prev_tag_close'] = '<li>';
+        $config['cur_tag_open'] = '<li class="active"><a href="#">';
+        $config['cur_tag_close'] = '</a></li>';
+        $config['num_tag_open'] = '<li>';
+        $config['num_tag_close'] = '</li>';
+        $config['per_page'] = 5;
+        $config['num_links'] = 10;
+        $config['uri_segment'] =2;
+        $config['first_url'] = '0';
+        $config['use_page_numbers'] = False;
+        $config['base_url'] = site_url('index/');
+        $config['total_rows'] = $this->db->count_all('parsebreakfast');
+        $this->pagination->initialize($config);
 
         //information to send view
-        $list['breakfastList'] = $this->db->get('parsebreakfast', $list['per_page'],$this->uri->segment(3));
-        $this->load->view('home', $list);
+        $config['breakfastList'] = $this->db->get('parsebreakfast', $config['per_page'],$this->uri->segment(2));
+        $this->load->view('home', $config);
     }
 }
