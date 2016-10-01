@@ -40,6 +40,7 @@
 
 $route['default_controller'] = "breakfast";
 $route['index/(:num)'] = "breakfast";
+$route['index/ajax'] = "ajax";
 $route['404_override'] = '';
 
 

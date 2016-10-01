@@ -30,8 +30,11 @@ class breakfast extends CI_Controller {
             $description = $food->description;
             $calories = $food->calories;
 
-            $this->breakfastModel->breakfastCreate($name,$price,$description,$calories);
-            $this->breakfastModel->breakfast2Create();
+            $rowCount = $this->db->get('parsebreakfast')->num_rows();
+            if($rowCount <= 14){
+                $this->breakfastModel->breakfastCreate($name,$price,$description,$calories);
+                $this->breakfastModel->breakfast2Create();
+            }
         };
 
         //pagination
